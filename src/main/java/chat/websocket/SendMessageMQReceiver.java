@@ -19,11 +19,11 @@ public class SendMessageMQReceiver {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-//	@Autowired
-//    private WebSocketServer webSocketServer;
-	
 	@Autowired
-	private WebSocketServer2 webSocketServer2;
+    private WebSocketServer webSocketServer;
+	
+//	@Autowired
+//	private WebSocketServer2 webSocketServer2;
 
 	@RabbitListener(queues = "ChatIdQueue")
 	public void receiveMessage(String message) {
@@ -33,9 +33,9 @@ public class SendMessageMQReceiver {
 
 			// 實際的 WebSocket 發送邏輯
 			Long roomId=messageDto.getReceiveChat().getChatId();
-			System.out.println("訊息已成功收到房間"+roomId+"的 RabbitMQ: " + message);
-//			webSocketServer.SendMessage( message);
-			webSocketServer2.SendMessage(roomId.toString(), message);
+			System.out.println("訊息已成功收到房間"+roomId+"的 RabbitMQ: " + messageDto.getMessage());
+			webSocketServer.SendMessage( message);
+//			webSocketServer2.SendMessage(roomId.toString(), message);
 		} catch (Exception e) {
 			System.err.println("接收訊息處理失敗: " + e.getMessage());
 			e.printStackTrace();

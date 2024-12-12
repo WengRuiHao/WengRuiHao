@@ -11,4 +11,5 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
 	// 查找某個使用者參與的所有聊天室
     List<Chat> findAllByUsersContaining(User user);
+    
 }

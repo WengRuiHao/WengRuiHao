@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,6 +49,7 @@ public class Chat {
 	private List<Message> messages;
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // 級聯保存與更新
+	@JsonIgnore
 	@JoinTable(
 	    name = "chat_users", // 關聯表名稱
 	    joinColumns = @JoinColumn(name = "chats_chat_id"), // Chat 表的主鍵列

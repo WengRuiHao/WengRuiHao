@@ -31,6 +31,14 @@ public class ChatServiceImpl implements ChatService {
 	private ModelMapper modelMapper;
 
 	@Override
+	public List<UserDto> findAllUserByChat(String roomId) {
+		Chat chat=chatRepository.findById(Long.parseLong(roomId)).get();
+		return userRepository.findAllByChatsContaining(chat).stream()
+				.map(user->modelMapper.map(user, UserDto.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public void createChat(ChatDto chatDto) {
 		// 查詢創建者
 	    User creator = userRepository.findByUsername(chatDto.getCreator().getUsername())
@@ -47,6 +55,12 @@ public class ChatServiceImpl implements ChatService {
 	    
 	    // 保存到數據庫
 	    chatRepository.save(createChat);
+	}
+
+	@Override
+	public void deleteChat(String roomId) {
+		chatRepository.findById(Long.parseLong(roomId)).orElseThrow(()->new RuntimeException("此聊天室不存在，刪除失敗!"));
+		chatRepository.deleteById(Long.parseLong(roomId));
 	}
 
 	@Override
